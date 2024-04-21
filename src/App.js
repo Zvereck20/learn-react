@@ -1,14 +1,15 @@
+/*eslint no-unused-expressions: ["error", { "allowShortCircuit": true }]*/
 import styles from './App.module.css';
 import { useState } from 'react';
 
 const NUMS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-let result = '';
 
 export const App = () => {
 	const [value, setValue] = useState('...');
 	const [operand1, setOperand1] = useState('');
 	const [operand2, setOperand2] = useState('');
 	const [operator, setOperator] = useState('');
+	const [isSolution, setIsSolution] = useState(false);
 
 	const numClick = (el) => {
 		operator.length
@@ -21,15 +22,14 @@ export const App = () => {
 				? (setValue(operand1 + el.target.value),
 					setOperand1((op) => op + el.target.value))
 				: (setOperand1(el.target.value), setValue(el.target.value));
-
-		result.length ? (result = '') : null;
+		setIsSolution(false);
 	};
 
 	const operatorClick = (el) => {
 		operand1.length &&
 			(setValue(operand1 + el.target.value), setOperator(el.target.value));
 
-		result.length ? (result = '') : null;
+		setIsSolution(false);
 	};
 
 	const clearClick = () => {
@@ -38,15 +38,16 @@ export const App = () => {
 		setOperand2('');
 		setOperator('');
 
-		result.length ? (result = '') : null;
+		setIsSolution(false);
 	};
 
 	const getResult = () => {
-		result = String(eval(value));
+		const result = String(eval(value));
 		setValue(result);
 		setOperand1(result);
 		setOperand2('');
 		setOperator('');
+		setIsSolution(true);
 	};
 
 	return (
@@ -56,7 +57,7 @@ export const App = () => {
 				className={
 					styles.valueContainer +
 					' ' +
-					(result.length ? `${styles.valueResult}` : '')
+					(isSolution ? `${styles.valueResult}` : '')
 				}
 			>
 				{value}

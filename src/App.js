@@ -1,8 +1,18 @@
-/*eslint no-unused-expressions: ["error", { "allowShortCircuit": true }]*/
 import styles from './App.module.css';
 import { useState } from 'react';
 
 const NUMS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+const getTotal = (num1, num2, operator) => {
+	switch (operator) {
+		case '+':
+			return +num1 + +num2;
+			break;
+		case '-':
+			return +num1 - +num2;
+			break;
+	}
+};
 
 export const App = () => {
 	const [value, setValue] = useState('...');
@@ -11,17 +21,16 @@ export const App = () => {
 	const [operator, setOperator] = useState('');
 	const [isSolution, setIsSolution] = useState(false);
 
-	const numClick = (el) => {
+	const numClick = (num) => {
 		operator.length
 			? operand2.length
-				? (setValue(operand1 + operator + operand2 + el.target.value),
-					setOperand2((op) => op + el.target.value))
-				: (setValue(operand1 + operator + el.target.value),
-					setOperand2(el.target.value))
+				? (setValue(operand1 + operator + operand2 + num),
+					setOperand2((op) => op + num))
+				: (setValue(operand1 + operator + num), setOperand2(num))
 			: operand1.length
-				? (setValue(operand1 + el.target.value),
-					setOperand1((op) => op + el.target.value))
-				: (setOperand1(el.target.value), setValue(el.target.value));
+				? (setValue(operand1 + num), setOperand1((op) => op + num))
+				: (setOperand1(num), setValue(num));
+
 		setIsSolution(false);
 	};
 
@@ -37,12 +46,11 @@ export const App = () => {
 		setOperand1('');
 		setOperand2('');
 		setOperator('');
-
 		setIsSolution(false);
 	};
 
 	const getResult = () => {
-		const result = String(eval(value));
+		const result = String(getTotal(operand1, operand2, operator));
 		setValue(result);
 		setOperand1(result);
 		setOperand2('');
@@ -68,8 +76,7 @@ export const App = () => {
 						<button
 							key={num}
 							className={styles.numButton + ' ' + styles.button}
-							onClick={numClick}
-							value={num}
+							onClick={() => numClick(num)}
 							type="button"
 						>
 							{num}

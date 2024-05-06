@@ -18,30 +18,27 @@ export const Game = () => {
 	const [isDraw, setIsDraw] = useState(false);
 	const [field, setField] = useState(['', '', '', '', '', '', '', '', '']);
 
-	const checkWinner = (player) => {
-		if (player.length === 3 && !isGameEnded) {
-			WIN_PATTERNS.map((element) => {
-				if (element.every((el, index) => el === player[index])) {
-					setIsGameEnded(true);
-					const player = currentPlayer === 'X' ? 'O' : 'X';
-					setCurrentPlayer(player);
-				}
-			});
+	WIN_PATTERNS.forEach((element) => {
+		const player = currentPlayer === 'X' ? 'O' : 'X';
+
+		if (element.every((el) => field[el] === player)) {
+			setIsGameEnded(true);
+			setCurrentPlayer(player);
 		}
-	};
-
-	let resultX = [];
-	let resultO = [];
-
-	for (let i = 0; i < field.length; i++) {
-		field[i] === 'X' && resultX.push(i);
-		field[i] === 'O' && resultO.push(i);
-	}
-
-	checkWinner(resultX);
-	checkWinner(resultO);
+	});
 
 	if (field.every((el) => el.length > 0) && !isDraw) setIsDraw(true);
+
+	let result = [...field];
+
+	const cellClick = (index) => {
+		if (!result[index].length && !isGameEnded) {
+			result[index] = currentPlayer;
+			setField(result);
+			const player = currentPlayer === 'X' ? 'O' : 'X';
+			setCurrentPlayer(player);
+		}
+	};
 
 	const clearClick = () => {
 		setCurrentPlayer('X');
@@ -59,6 +56,7 @@ export const Game = () => {
 			currentPlayer={currentPlayer}
 			setCurrentPlayer={setCurrentPlayer}
 			clearClick={clearClick}
+			cellClick={cellClick}
 		/>
 	);
 };

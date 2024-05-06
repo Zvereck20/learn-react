@@ -8,9 +8,8 @@ export const GameLayout = ({
 	isDraw,
 	isGameEnded,
 	currentPlayer,
-	setField,
-	setCurrentPlayer,
 	clearClick,
+	cellClick,
 }) => (
 	<div className={styles.wrapper}>
 		<Information
@@ -18,16 +17,8 @@ export const GameLayout = ({
 			isGameEnded={isGameEnded}
 			currentPlayer={currentPlayer}
 		/>
-		<Field
-			field={field}
-			setField={setField}
-			currentPlayer={currentPlayer}
-			setCurrentPlayer={setCurrentPlayer}
-			isGameEnded={isGameEnded}
-		/>
-		<button className={styles.button} onClick={clearClick}>
-			Начать заново
-		</button>
+		<Field field={field} cellClick={cellClick} />
+		<button onClick={clearClick}>Начать заново</button>
 	</div>
 );
 

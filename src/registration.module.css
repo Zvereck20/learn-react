@@ -1,0 +1,48 @@
+.wrapper {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.title {
+  font-size: 20px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+
+  fieldset {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  div {
+    padding: 10px;
+    font-size: 18px;
+    line-height: normal;
+    text-transform: uppercase;
+    color: red;
+  }
+
+  label {
+    padding-bottom: 5px;
+  }
+
+  input {
+    padding: 15px;
+  }
+}
+
+.button {
+  width: 95%;
+  padding: 15px 20px;
+  font-size: 20px;
+  cursor: pointer;
+
+  &:disabled {
+    cursor: default;
+  }
+}

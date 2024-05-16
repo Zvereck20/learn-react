@@ -1,13 +1,11 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { Registration } from "./Registration";
 
-import { Game } from "./Game";
-
-const rootElement = document.getElementById("root");
-const root = createRoot(rootElement);
+const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
-  <StrictMode>
-    <Game />
-  </StrictMode>
+  <React.StrictMode>
+    <Registration />
+  </React.StrictMode>
 );

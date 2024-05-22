@@ -1,4 +1,4 @@
-import { Login } from "./components/Login/Login";
+import { Email } from "./components/Email/Email";
 import { Password } from "./components/Password/Password";
 import { ConfirmationPassword } from "./components/ConfirmationPassword/ConfirmationPassword";
 import styles from "./registration.module.css";
@@ -7,8 +7,8 @@ export const RegistrationLayout = ({
   blocked,
   submitButtonRef,
   onSubmit,
-  login,
-  setLoginIsValid,
+  email,
+  setEmailIsValid,
   password,
   setPasswordIsValid,
   confirmationPassword,
@@ -20,7 +20,7 @@ export const RegistrationLayout = ({
         Здравствуйте, введите данные для регистарции!
       </h1>
       <form className={styles.form} onSubmit={onSubmit}>
-        <Login login={login} setLoginIsValid={setLoginIsValid} />
+        <Email email={email} setEmailIsValid={setEmailIsValid} />
         <Password password={password} setPasswordIsValid={setPasswordIsValid} />
         <ConfirmationPassword
           confirmationPassword={confirmationPassword}
@@ -30,7 +30,6 @@ export const RegistrationLayout = ({
         <button
           type="submit"
           className={styles.button}
-          // disabled={blocked.current}
           disabled={blocked}
           ref={submitButtonRef}
         >

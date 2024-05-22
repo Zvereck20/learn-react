@@ -24,6 +24,8 @@ export const ConfirmationPassword = ({
   const onBlur = ({ target }) => {
     if (passwordValue !== target.value) {
       setError("Вы ввели не верный пароль");
+    } else {
+      setError(null);
     }
   };
 

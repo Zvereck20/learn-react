@@ -1,41 +1,102 @@
-import styles from './styles.module.css';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
+import { AddListItem } from './components/AddListItem/add-list-item';
+import { ChangeItemValue } from './components/ChangeItemValue/change-item-value';
+import { RemoveListItem } from './components/RemoveListItem/remove-list-item';
+import { Search } from './components/Search/search';
+import { SearchDebounce } from './components/SearchDebounce/search-debounce';
+import { Sorting } from './components/Sorting/sorting';
+import './index.css';
 
 export const App = () => {
+	const [refreshProductsFlag, setRefreshProductsFlag] = useState(false);
 	const [products, setProducts] = useState([]);
+	const [searchItems, setSearchItems] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
+
+	const refreshProducts = () => setRefreshProductsFlag(!refreshProductsFlag);
 
 	useEffect(() => {
 		setIsLoading(true);
 
-		fetch('https://jsonplaceholder.typicode.com/todos')
+		fetch('http://localhost:3003/products')
 			.then((loadedData) => loadedData.json())
 			.then((loadedProducts) => {
 				setProducts(loadedProducts);
 			})
 			.catch(() => console.log('some error'))
 			.finally(() => setIsLoading(false));
-	}, []);
+	}, [refreshProductsFlag]);
 
 	return (
-		<div className={styles.wrapper}>
+		<div className="app">
+			<h1>Список дел</h1>
+			<AddListItem refreshProducts={refreshProducts} />
 			{isLoading ? (
 				<div className="loader"></div>
+			) : products.length ? (
+				<>
+					<div className="container">
+						{/* Обычный поиск */}
+
+						{/* <Search
+							products={products}
+							setProducts={setProducts}
+							refreshProducts={refreshProducts}
+						/> */}
+
+						{/* продвинутый поиск с помощью debounce() */}
+
+						<SearchDebounce
+							products={products}
+							setSearchItems={setSearchItems}
+						/>
+
+						<Sorting
+							products={products}
+							setProducts={setProducts}
+							refreshProducts={refreshProducts}
+						/>
+					</div>
+					{searchItems.length ? (
+						<ul className="list">
+							{searchItems.map(({ id, title }) => (
+								<li key={id} className="item">
+									<span>{title}</span>
+									<div className="wrap">
+										<RemoveListItem
+											id={id}
+											refreshProducts={refreshProducts}
+										/>
+										<ChangeItemValue
+											id={id}
+											refreshProducts={refreshProducts}
+										/>
+									</div>
+								</li>
+							))}
+						</ul>
+					) : (
+						<ul className="list">
+							{products.map(({ id, title }) => (
+								<li key={id} className="item">
+									<span>{title}</span>
+									<div className="wrap">
+										<RemoveListItem
+											id={id}
+											refreshProducts={refreshProducts}
+										/>
+										<ChangeItemValue
+											id={id}
+											refreshProducts={refreshProducts}
+										/>
+									</div>
+								</li>
+							))}
+						</ul>
+					)}
+				</>
 			) : (
-				<ul className={styles.list}>
-					{products.map(({ id, title, completed }) => (
-						<li
-							key={id}
-							className={
-								`${styles.item} ` +
-								(completed ? `${styles.completed}` : '')
-							}
-						>
-							<div className={styles.count}>{id}</div>
-							{title}
-						</li>
-					))}
-				</ul>
+				<p>Добавьте новое дело</p>
 			)}
 		</div>
 	);

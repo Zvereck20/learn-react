@@ -7,6 +7,10 @@ import { SearchDebounce } from './components/SearchDebounce/search-debounce';
 import { Sorting } from './components/Sorting/sorting';
 import './index.css';
 
+// Firebase variables
+import { ref, onValue } from 'firebase/database';
+import { db } from './firebase';
+
 export const App = () => {
 	const [refreshProductsFlag, setRefreshProductsFlag] = useState(false);
 	const [products, setProducts] = useState([]);
@@ -18,13 +22,14 @@ export const App = () => {
 	useEffect(() => {
 		setIsLoading(true);
 
-		fetch('http://localhost:3003/products')
-			.then((loadedData) => loadedData.json())
-			.then((loadedProducts) => {
-				setProducts(loadedProducts);
-			})
-			.catch(() => console.log('some error'))
-			.finally(() => setIsLoading(false));
+		const productsDbRef = ref(db, 'products');
+
+		return onValue(productsDbRef, (snapshot) => {
+			const loadedProducts = snapshot.val() || [];
+
+			setProducts(Object.entries(loadedProducts));
+			setIsLoading(false);
+		});
 	}, [refreshProductsFlag]);
 
 	return (
@@ -59,7 +64,7 @@ export const App = () => {
 					</div>
 					{searchItems.length ? (
 						<ul className="list">
-							{searchItems.map(({ id, title }) => (
+							{searchItems.map(([id, { title }]) => (
 								<li key={id} className="item">
 									<span>{title}</span>
 									<div className="wrap">
@@ -77,7 +82,7 @@ export const App = () => {
 						</ul>
 					) : (
 						<ul className="list">
-							{products.map(({ id, title }) => (
+							{products.map(([id, { title }]) => (
 								<li key={id} className="item">
 									<span>{title}</span>
 									<div className="wrap">

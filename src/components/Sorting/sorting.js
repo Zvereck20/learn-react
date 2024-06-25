@@ -6,10 +6,12 @@ export const Sorting = ({ products, setProducts, refreshProducts }) => {
 
 	const onSorting = () => {
 		products.sort(function (a, b) {
-			if (a.title < b.title) {
+			console.log(a[1].title);
+			console.log(b);
+			if (a[1].title < b[1].title) {
 				return -1;
 			}
-			if (a.title > b.title) {
+			if (a[1].title > b[1].title) {
 				return 1;
 			}
 			return 0;

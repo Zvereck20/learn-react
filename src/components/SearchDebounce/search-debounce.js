@@ -9,7 +9,7 @@ export const SearchDebounce = ({ products, setSearchItems }) => {
 		let result = [];
 
 		products.forEach((element) => {
-			const { title } = element;
+			const title = element[1].title;
 			if (title.toLowerCase().includes(value.toLowerCase())) {
 				result.push(element);
 			}

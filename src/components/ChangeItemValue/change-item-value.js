@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { ChangeItemValueLayout } from './change-item-value-layout';
 
+// Firebase variables
+import { ref, set } from 'firebase/database';
+import { db } from '../../firebase';
+
 export const ChangeItemValue = ({ id, refreshProducts }) => {
 	const [modal, setModal] = useState(false);
 	const [value, setValue] = useState('');
@@ -8,24 +12,20 @@ export const ChangeItemValue = ({ id, refreshProducts }) => {
 	const onSubmit = (event) => {
 		event.preventDefault();
 
-		console.log(refreshProducts);
+		const productsDbRef = ref(db, `products/${id}`);
 
-		fetch(`http://localhost:3003/products/${id}`, {
-			method: 'PUT',
-			headers: { 'Content-Type': 'application/json;charset=utf-8' },
-			body: JSON.stringify({
-				title: value,
-			}),
+		set(productsDbRef, {
+			title: value,
 		})
-			.then((rawResponse) => rawResponse.json())
 			.then((response) => {
 				console.log('Дело обновлено, ответ сервера:', response);
 				refreshProducts();
 				setModal(false);
 			})
-			.catch(() => console.log())
+			.catch(() => console.log('some SET'))
 			.finally(() => setValue(''));
 	};
+
 	return (
 		<ChangeItemValueLayout
 			modal={modal}

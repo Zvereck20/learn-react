@@ -1,11 +1,14 @@
 import { RemoveListItemLayout } from './remove-list-item-layout';
 
+// Firebase variables
+import { ref, remove } from 'firebase/database';
+import { db } from '../../firebase';
+
 export const RemoveListItem = ({ id, refreshProducts }) => {
 	const onClick = () => {
-		fetch(`http://localhost:3003/products/${id}`, {
-			method: 'DELETE',
-		})
-			.then((rawResponse) => rawResponse.json())
+		const productsDbRef = ref(db, `products/${id}`);
+
+		remove(productsDbRef)
 			.then((response) => {
 				console.log('Дело выполнено, ответ сервера:', response);
 			})

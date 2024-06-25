@@ -12,7 +12,7 @@ export const Search = ({ products, setProducts, refreshProducts }) => {
 		e.preventDefault();
 
 		products.forEach((element) => {
-			const { title } = element;
+			const title = element[1].title;
 
 			if (title.toLowerCase().includes(value.toLowerCase())) {
 				searchItems.push(element);

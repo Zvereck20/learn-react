@@ -1,8 +1,11 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import styles from './styless.module.css';
+import { TodosContext } from '../../context';
 
-export const AddTask = ({ reoladTodos, setReoladTodos }) => {
+export const AddTask = () => {
 	const [value, setValue] = useState('');
+
+	const { reoladTodos, setReoladTodos } = useContext(TodosContext);
 
 	const onSubmit = (event) => {
 		event.preventDefault();

@@ -1,11 +1,14 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AddTask } from '../add-task/add-task';
 import { useDebounce } from '../../hooks/use-debounce';
+import { TodosContext } from '../../context';
 
-export const MainPage = ({ todos, setTodos, reoladTodos, setReoladTodos }) => {
+export const MainPage = () => {
 	const [searchItems, setSearchItems] = useState('');
 	const [sorted, setSorted] = useState(false);
+
+	const { todos, setTodos, reoladTodos, setReoladTodos } = useContext(TodosContext);
 
 	const debounceSearch = useDebounce(searchItems, 1000);
 
@@ -40,7 +43,7 @@ export const MainPage = ({ todos, setTodos, reoladTodos, setReoladTodos }) => {
 	return (
 		<>
 			<h1>Список дел</h1>
-			<AddTask reoladTodos={reoladTodos} setReoladTodos={setReoladTodos} />
+			<AddTask />
 
 			<div className="wrap">
 				<form className="search">

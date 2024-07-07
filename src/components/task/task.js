@@ -3,8 +3,11 @@ import { useParams, Link } from 'react-router-dom';
 import { RemoveTask } from '../remove-task/remove-task';
 import styles from './styles.module.css';
 import { ChangeTaskValue } from '../change-task-value/change-task-value';
+import { useContext } from 'react';
+import { TodosContext } from '../../context';
 
-export const Task = ({ todos, reoladTodos, setReoladTodos }) => {
+export const Task = () => {
+	const { todos, reoladTodos, setReoladTodos } = useContext(TodosContext);
 	const params = useParams();
 
 	const item = todos.filter((todo) => todo.id === params.id);

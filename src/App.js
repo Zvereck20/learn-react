@@ -4,6 +4,7 @@ import { Task } from './components/task/task';
 import { MainPage } from './components/main-page/main-page';
 import { NotFound } from './components/not-found/not-found';
 import './style.css';
+import { TodosContext } from './context';
 
 export const App = () => {
 	const [todos, setTodos] = useState([]);
@@ -30,31 +31,16 @@ export const App = () => {
 
 	return (
 		<div className="app">
-			<Routes>
-				<Route
-					path="/"
-					element={
-						<MainPage
-							todos={todos}
-							setTodos={setTodos}
-							reoladTodos={reoladTodos}
-							setReoladTodos={setReoladTodos}
-						/>
-					}
-				/>
-				<Route
-					path="task/:id"
-					element={
-						<Task
-							todos={todos}
-							reoladTodos={reoladTodos}
-							setReoladTodos={setReoladTodos}
-						/>
-					}
-				/>
-				<Route path="/404" element={<NotFound />} />
-				<Route path="*" element={<Navigate to="/404" />} />
-			</Routes>
+			<TodosContext.Provider
+				value={{ todos, setTodos, reoladTodos, setReoladTodos }}
+			>
+				<Routes>
+					<Route path="/" element={<MainPage />} />
+					<Route path="task/:id" element={<Task />} />
+					<Route path="/404" element={<NotFound />} />
+					<Route path="*" element={<Navigate to="/404" />} />
+				</Routes>
+			</TodosContext.Provider>
 		</div>
 	);
 };

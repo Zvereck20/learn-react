@@ -1,42 +1,38 @@
-import { useState } from 'react';
 import { WIN_PATTERNS } from './constant/win-patterns'
 import { Field } from './components/Field/Field';
 import { Information } from './components/Information/Information';
-import { fieldsStore, drawStore, gameEndedStore, currentPlayerStore } from './store';
+import { useSelector } from 'react-redux';
 import styles from './game.module.css';
+import { useDispatch } from 'react-redux';
 
 export const Game = () => {
-	const [refresh, setRefresh] = useState(true);
+	const dispatch = useDispatch();
 
-	const currentPlayer = currentPlayerStore.getState()
-	const isGameEnded = gameEndedStore.getState();
-	const fields = fieldsStore.getState();
+	const currentPlayer = useSelector((state) => state.gameState.currentPlayer);
+	const isGameEnded = useSelector((state) => state.gameState.isGameEnded);
+	const fields = useSelector((state) => state.fieldsState)
 
 	WIN_PATTERNS.forEach((element) => {
 		const playerNext = currentPlayer === 'X' ? 'O' : 'X';
 
 		if (element.every((el) => fields[el] === playerNext)) {
-			gameEndedStore.dispatch({ type: 'CHANGE' })
-			currentPlayerStore.dispatch({ type: 'CHANGE' });
+			dispatch({ type: 'SET_GAME_ENDED' })
+			dispatch({ type: 'CHANGE_PLAYER' });
 		} else if (fields.every((el) => el.length > 0)) {
-			drawStore.dispatch({ type: 'CHANGE' });
+			dispatch({ type: 'SET_DRAW' });
 		}
 	});
 
 	const cellClick = (index) => {
 		if (!fields[index].length && !isGameEnded) {
-			fieldsStore.dispatch({ type: `SET_${currentPlayer}`, payload: index })
-			currentPlayerStore.dispatch({ type: 'CHANGE' });
-			setRefresh(!refresh);
+			dispatch({ type: `SET_${currentPlayer}`, payload: index })
+			dispatch({ type: 'CHANGE_PLAYER' });
 		}
 	};
 
 	const clearClick = () => {
-		drawStore.dispatch({ type: 'INITIAL' })
-		fieldsStore.dispatch({ type: 'INITIAL' })
-		gameEndedStore.dispatch({ type: 'INITIAL' })
-		currentPlayerStore.dispatch({ type: 'INITIAL' });
-		setRefresh(!refresh);
+		dispatch({type: 'INITIAL_FIELDS'});
+		dispatch({type: 'INITIAL_GAME'});
 	};
 
 	return (

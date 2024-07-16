@@ -1,10 +1,8 @@
-import { createStore } from "redux";
-
 const initialState = ['', '', '', '', '', '', '', '', ''];
 
-const reducer = (state = initialState, action) => {
+export const fieldsReducer = (state = initialState, action) => {
   const { type, payload } = action;
-  const result = [...state];
+  let result = [...state];
 
   switch (type) {
     case 'SET_X':
@@ -13,12 +11,10 @@ const reducer = (state = initialState, action) => {
     case 'SET_O':
       result[payload] = 'O';
       return result;
-    case 'INITIAL':
-      state = [...initialState];
-      return state;
+    case 'INITIAL_FIELDS':
+      result = [...initialState];
+      return result;
     default:
       return state
   }
 }
-
-export const fieldsStore = createStore(reducer);

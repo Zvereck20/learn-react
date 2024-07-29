@@ -1,16 +1,18 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import { Game } from "./Game";
-import { Provider } from "react-redux";
-import { store } from "./store";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { App } from './App';
+import { Provider } from 'react-redux';
+import { store } from './store';
+import { BrowserRouter } from 'react-router-dom';
 
-const rootElement = document.getElementById("root");
-const root = createRoot(rootElement);
+const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
-  <StrictMode>
-    <Provider store={store}>
-      <Game />
-    </Provider>
-  </StrictMode>
+	<React.StrictMode>
+		<BrowserRouter>
+			<Provider store={store}>
+				<App />
+			</Provider>
+		</BrowserRouter>
+	</React.StrictMode>,
 );

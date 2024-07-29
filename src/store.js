@@ -1,11 +1,14 @@
-import { combineReducers, createStore } from "redux";
-import { fieldsReducer, gameReducer } from './reducers'
+import { applyMiddleware, combineReducers, createStore, compose } from "redux";
+import { thunk } from "redux-thunk";
+import {sortingReducer, todosReducer} from './reducers';
 
 const reducer = combineReducers({
-  fieldsState: fieldsReducer,
-  gameState: gameReducer,
-})
+  sortingState: sortingReducer,
+  todosState: todosReducer, 
+});
 
-export const store = createStore(reducer);
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+export const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
 
 store.subscribe(() => console.log(store.getState()))

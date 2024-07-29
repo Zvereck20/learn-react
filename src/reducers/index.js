@@ -1,2 +1,2 @@
-export * from './fields-reducer'
-export * from './game-reducer'
+export * from './sorting-reducer'
+export * from './todos-reducer'
